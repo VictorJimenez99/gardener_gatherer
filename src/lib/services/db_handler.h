@@ -8,18 +8,17 @@
 
 #include <sqlite3.h>
 #include <string>
-#include <functional>
 
-class DBHandler {
+class db_handler {
 protected:
     sqlite3 *db{nullptr};
 
 public:
-    explicit DBHandler(const std::string& db_name);
-    ~DBHandler();
+    explicit db_handler(const std::string &db_name);
+
+    ~db_handler();
 
     void exec_void(const std::string &sql);
-
 };
 
 

@@ -5,10 +5,13 @@
 #include <stdexcept>
 #include <iostream>
 #include <memory>
-#include "GardenerDB.h"
-#include "../constants/tables.h"
+#include <vector>
+#include <algorithm>
+#include "gardener_db.h"
+#include "../constants/constants.h"
 
-GardenerDB::GardenerDB() : DBHandler("/opt/gardener/files/gardener_db.sqlite") {
+
+gardener_db::gardener_db() : db_handler(DB_NAME) {
     std::string result = "Setting up foreign keys support...";
     try {
         this->exec_void("PRAGMA foreign_keys = ON;");
@@ -19,18 +22,18 @@ GardenerDB::GardenerDB() : DBHandler("/opt/gardener/files/gardener_db.sqlite") {
 
 }
 
-bool GardenerDB::schema_is_complete() {
+bool gardener_db::schema_is_complete() {
     std::string sql = "SELECT name from sqlite_master WHERE type='table';";
     // we know that there will only be one column with the name = 'name'
     std::string log = "Checking database integrity...";
     char *error = nullptr;
     std::vector<std::string> available_tables = {};
 
-    auto* ptr = &available_tables;
+    auto *ptr = &available_tables;
 
     auto fun = []
-            (void *param, int, char **col_value, char**) -> int {
-        auto *vector_c = *(std::vector<std::string>**)param;
+            (void *param, int, char **col_value, char **) -> int {
+        auto *vector_c = *(std::vector<std::string> **) param;
         vector_c->push_back({*col_value});
         return 0;
 
@@ -38,14 +41,14 @@ bool GardenerDB::schema_is_complete() {
     int ret_val = sqlite3_exec(this->db, sql.c_str(),
                                fun,
                                &ptr, &error);
-    if(ret_val != SQLITE_OK) {
+    if (ret_val != SQLITE_OK) {
         std::cout << log
                 .append("Integrity check returned a non zero value: ")
                 .append(std::to_string(ret_val))
                 .append("\n");
     }
 
-    if(error) {
+    if (error) {
         std::cout << "An error occurred while checking db integrity: " << error << std::endl;
         sqlite3_free(error);
         return false;
@@ -54,23 +57,23 @@ bool GardenerDB::schema_is_complete() {
 
     std::vector<std::string> missing_tables = {};
 
-    for(const auto& needed: NEEDED_TABLES) {
+    for (const auto &needed: NEEDED_TABLES) {
         bool found = false;
-        for(const auto& table: available_tables){
-            if(table == needed) {
+        for (const auto &table: available_tables) {
+            if (table == needed) {
                 found = true;
                 break;
             }
         }
-        if(!found) {
+        if (!found) {
             missing_tables.emplace_back(needed);
             will_fail = true;
         }
     }
-    if(will_fail) {
+    if (will_fail) {
         log.append("Error -> missing tables: ");
-        std::for_each( missing_tables.begin(), missing_tables.end(), [&](std::string& elem){
-           log.append(elem).append(" ");
+        std::for_each(missing_tables.begin(), missing_tables.end(), [&](std::string &elem) {
+            log.append(elem).append(" ");
         });
         std::cout << log << std::endl;
         return false;//fail state

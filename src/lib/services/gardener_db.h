@@ -6,12 +6,12 @@
 #define GARDENER_GARDENER_DB_H
 
 
-#include "DBHandler.h"
+#include "db_handler.h"
 
-class GardenerDB: public DBHandler {
+class gardener_db : public db_handler {
 
 public:
-    GardenerDB();
+    gardener_db();
 
     bool schema_is_complete();
 

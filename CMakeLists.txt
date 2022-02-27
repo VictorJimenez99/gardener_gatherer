@@ -17,10 +17,11 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(gardener
         src/main.cpp
-        src/lib/classes/Plant.cpp src/lib/classes/Plant.h
-        src/lib/services/DBHandler.cpp src/lib/services/DBHandler.h
-        src/lib/services/GardenerDB.cpp src/lib/services/GardenerDB.h
-        src/lib/constants/tables.h)
+        src/lib/constants/constants.h
+        src/lib/classes/plant_raw.cpp src/lib/classes/plant_raw.h
+        src/lib/services/db_handler.cpp src/lib/services/db_handler.h
+        src/lib/services/gardener_db.cpp src/lib/services/gardener_db.h
+        src/lib/services/connection_pool.cpp src/lib/services/connection_pool.h)
 
 
 target_link_libraries(gardener sqlite3)
@@ -29,10 +30,12 @@ target_link_libraries(gardener sqlite3)
 enable_testing()
 add_executable(test_suit
         tests/test_db.cpp
-        src/lib/classes/Plant.cpp src/lib/classes/Plant.h
-        src/lib/services/DBHandler.cpp src/lib/services/DBHandler.h
-        src/lib/services/GardenerDB.cpp src/lib/services/GardenerDB.h
-        src/lib/constants/tables.h)
+        tests/test_classes.cpp
+        src/lib/constants/constants.h
+        src/lib/classes/plant_raw.cpp src/lib/classes/plant_raw.h
+        src/lib/services/db_handler.cpp src/lib/services/db_handler.h
+        src/lib/services/gardener_db.cpp src/lib/services/gardener_db.h
+        src/lib/services/connection_pool.cpp src/lib/services/connection_pool.h)
 target_link_libraries(test_suit gtest_main sqlite3)
 
 include(GoogleTest)

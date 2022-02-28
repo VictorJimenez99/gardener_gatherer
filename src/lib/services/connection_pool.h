@@ -62,7 +62,7 @@ public:
 
     ~connection_handler();
 
-    gardener_db *&get();
+    gardener_db *get();
 
 };
 

@@ -3,7 +3,7 @@
 
 int main() {
 
-    gardener_db *handler = connection_handler().get();
+    gardener_db* handler = connection_handler().get();
 
     if (handler->schema_is_complete()) {
         std::cout << "schema is complete" << std::endl;

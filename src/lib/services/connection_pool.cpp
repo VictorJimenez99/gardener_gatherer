@@ -76,7 +76,7 @@ connection_handler::connection_handler() {
     db = &inner->get_connection();
 }
 
-gardener_db *&connection_handler::get() {
+gardener_db *connection_handler::get() {
     return db;
 }
 

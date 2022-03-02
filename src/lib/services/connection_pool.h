@@ -49,6 +49,8 @@ public:
 
 
     void release_connection(gardener_db &connection);
+
+    std::vector<std::shared_ptr<pool_elem>> get_pool() ;
 };
 
 

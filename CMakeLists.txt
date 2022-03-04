@@ -31,11 +31,12 @@ enable_testing()
 add_executable(test_suit
         tests/test_db.cpp
         tests/test_classes.cpp
+        tests/test_connection_pool.cpp
         src/lib/constants/constants.h
         src/lib/classes/plant_raw.cpp src/lib/classes/plant_raw.h
         src/lib/services/db_handler.cpp src/lib/services/db_handler.h
         src/lib/services/gardener_db.cpp src/lib/services/gardener_db.h
-        src/lib/services/connection_pool.cpp src/lib/services/connection_pool.h tests/test_connection_pool.cpp)
+        src/lib/services/connection_pool.cpp src/lib/services/connection_pool.h)
 target_link_libraries(test_suit gtest_main sqlite3)
 
 include(GoogleTest)

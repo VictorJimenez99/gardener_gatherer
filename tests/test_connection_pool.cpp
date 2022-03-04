@@ -6,30 +6,33 @@
 #include "../src/lib/services/connection_pool.h"
 #include "../src/lib/constants/constants.h"
 
-TEST(testConnPool, regrow) {
-    auto saturation = std::vector<connection_handler>();
-    ASSERT_EQ(saturation.size(), 0);
-    for(int i = 0; i < CONNECTION_POOL_START_SIZE; i++) {
-        saturation.emplace_back();
-        auto size = saturation.size();
 
-        //it  should be full at this point
-        ASSERT_EQ(size, i+1);
+TEST(connectionPool, poolElemTest) {
+    pool_elem e;
+    auto f = e.get_is_busy_ref().load();
+    ASSERT_EQ(f, false);
+}
 
-    }
-    auto ptr = connection_pool_inner::instance();
-    auto size = ptr->get_pool().size();
 
-    //it  should be full at this point
+TEST(connectioPool, poolConn) {
+    auto& handler = connection_pool_inner::get_instance();
+    int size = handler.unsafe_get_pool().unsafe_get_size();
+
     ASSERT_EQ(size, CONNECTION_POOL_START_SIZE);
 
-    /*
-    auto conn = connection_handler();
+    auto saturation = std::vector<std::shared_ptr<connection_pool>>();
 
-    ptr = connection_pool_inner::instance();
-    size = ptr->get_pool().size();
+    ASSERT_EQ(saturation.size(), 0);
+    for (int i = 0; i < CONNECTION_POOL_START_SIZE; i++) {
+        saturation.emplace_back(std::make_shared<connection_pool>());
+    }
+    long saturation_size = saturation.size();
+    ASSERT_EQ(saturation_size, CONNECTION_POOL_START_SIZE);
+    size = handler.unsafe_get_pool().unsafe_get_size();
+    ASSERT_EQ(size, CONNECTION_POOL_START_SIZE);
 
+    auto connection = connection_pool();
+    size = handler.unsafe_get_pool().unsafe_get_size();
+    saturation.size();
     ASSERT_EQ(size, CONNECTION_POOL_START_SIZE + 1);
-*/
-
 }

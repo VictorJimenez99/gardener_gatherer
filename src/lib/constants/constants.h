@@ -8,7 +8,7 @@
 #include <string>
 
 constexpr char *NEEDED_TABLES[] = {(char *) "rack", (char *) "plant",};
-constexpr unsigned int CONNECTION_POOL_START_SIZE = 20;
+constexpr unsigned int CONNECTION_POOL_SIZE = 20;
 //constexpr char* DB_NAME = (char*)"/opt/gardener/files/gardener_db.sqlite";
 constexpr char *DB_NAME = (char *) "gardener_db.sqlite";
 

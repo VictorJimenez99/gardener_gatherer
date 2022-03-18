@@ -10,28 +10,20 @@
 
 class plant_raw {
 private:
-    long id;
     long rack;
-    std::byte rack_position;
+    long rack_x;
+    long rack_y;
     std::string species;
-    std::byte humidity_status;
 
 public:
     //typedef std::unique_ptr<plant_raw> ptr;
-    plant_raw(long id, long rack, long rack_position, std::string species, int humidity_status);
-
+    plant_raw(long rack, long rack_x, long rack_y, std::string species);
     ~plant_raw();
-
-    [[nodiscard]] long get_id() const;
-
     [[nodiscard]] long get_rack() const;
-
-    [[nodiscard]] std::byte get_rack_position() const;
-
+    [[nodiscard]] long get_rack_x() const;
+    [[nodiscard]] long get_rack_y() const;
     [[nodiscard]] std::string get_species() const;
-
-    [[nodiscard]] std::byte get_humidity_status() const;
-
+    [[nodiscard]] std::tuple<int, int, int> get_primary_key() const;
 };
 
 
